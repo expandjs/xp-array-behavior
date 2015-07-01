@@ -30,9 +30,9 @@ This behavior is used to improve polymer's array mutation API on the context ele
          * and returns the passed element.
          *
          * @method append
-         * @param {string} array The name of the array to modify.
-         * @param {*} value The value to be added to the array.
-         * @returns {*} Returns the appended `value`.
+         * @param {string} array
+         * @param {*} value
+         * @returns {*}
          */
         append: function (array, value) {
             XP.assertArgument(XP.isString(array, true), 1, 'string');
@@ -47,9 +47,9 @@ This behavior is used to improve polymer's array mutation API on the context ele
          * The substitution happens only if necessary.
          *
          * @method overwrite
-         * @param {string} array The name of the array to modify.
-         * @param {Array} other The source array.
-         * @returns {Array} Returns the modified `array`.
+         * @param {string} array
+         * @param {Array} other
+         * @returns {Array}
          */
         overwrite: function (array, other) {
             XP.assertArgument(XP.isString(array, true), 1, 'string');
@@ -63,10 +63,10 @@ This behavior is used to improve polymer's array mutation API on the context ele
         /**
          * Removes all instances of `value` from `array`.
          *
-         * @function pull
-         * @param {string} array The name of the array to modify.
-         * @param {*} [value] The value to remove.
-         * @returns {Array} Returns `array`.
+         * @method pull
+         * @param {string} array
+         * @param {*} [value]
+         * @returns {Array}
          */
         pull: function (array, value) {
             XP.assertArgument(XP.isString(array, true), 1, 'string');
@@ -79,10 +79,10 @@ This behavior is used to improve polymer's array mutation API on the context ele
         /**
          * Removes an element from `array` corresponding to the given index and returns it.
          *
-         * @function pullAt
-         * @param {string} array The name of the array to modify.
-         * @param {number} index The index of the element to remove
-         * @returns {*} Returns the removed element.
+         * @method pullAt
+         * @param {string} array
+         * @param {number} index
+         * @returns {*}
          */
         pullAt: function (array, index) {
             XP.assertArgument(XP.isString(array, true), 1, 'string');
