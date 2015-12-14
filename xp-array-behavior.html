@@ -7,17 +7,19 @@ The complete set of contributors may be found at https://expandjs.github.io/CONT
 -->
 
 <!--
-A behavior used to improve Polymer's array mutation API on the context element.
+A behavior used to improve Polymer's array mutation API.
 
 @behavior xp-array-behavior
-@description A behavior used to improve polymer's array mutation API on the context element.
-@keywords web app, html5, expandjs, web-components
+@description A behavior used to improve Polymer's array mutation API.
+@keywords expandjs, web app, custom elements, web-components
 @group behaviors
+@hot
+
 @homepage http://expandjs.com/elements/xp-array-behavior
 @repository https://github.com/ExpandJS/xp-array-behavior
 
-@dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.11
+@dependency polymer Polymer/polymer#^1.2.0
+@dependency expandjs ExpandJS/expandjs#0.10.0
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -31,22 +33,22 @@ A behavior used to improve Polymer's array mutation API on the context element.
          * and returns the passed element.
          *
          * @method append
-         * @param {string} array
+         * @param {string} path
          * @param {*} value
          * @returns {*}
          */
-        append: function (array, value) {
+        append: function (path, value) {
 
             // Asserting
-            XP.assertArgument(XP.isString(array, true), 1, 'string');
-            XP.assertOption(XP.isArray(this[array]), array, 'Array');
+            XP.assertArgument(XP.isString(path, true), 1, 'string');
+            XP.assertOption(XP.isArray(this.get(path)), path, 'Array');
 
             // Vars
-            var self     = this,
-                includes = XP.includes(self[array], value);
+            var self  = this,
+                array = self.get(path);
 
             // Appending
-            if (!includes) { self.push(array, value); }
+            if (array.indexOf(value) < 0) { self.push(path, value); }
 
             return value;
         },
@@ -56,67 +58,73 @@ A behavior used to improve Polymer's array mutation API on the context element.
          * The substitution happens only if necessary.
          *
          * @method overwrite
-         * @param {string} array
+         * @param {string} path
          * @param {Array} other
          * @returns {Array}
          */
-        overwrite: function (array, other) {
+        overwrite: function (path, other) {
 
             // Asserting
-            XP.assertArgument(XP.isString(array, true), 1, 'string');
+            XP.assertArgument(XP.isString(path, true), 1, 'string');
             XP.assertArgument(XP.isArrayable(other), 2, 'Arrayable');
-            XP.assertOption(XP.isArray(this[array]), array, 'Array');
+            XP.assertOption(XP.isArray(this.get(path)), path, 'Array');
 
             // Vars
             var self    = this,
-                differs = self[array].length !== other.length || XP.mapOne(self[array], function (val, i) { if (val !== other[i]) { return true; } });
+                array   = self.get(path),
+                differs = array.length !== other.length || XP.reduce(array, function (differs, val, i) { return differs || val !== other[i]; });
 
             // Overwriting
-            if (differs) { self.splice.apply(self, XP.concat([array, 0, self[array].length], other)); }
+            if (differs) { self.splice.apply(self, XP.concat([path, 0, array.length], other)); }
 
-            return self[array];
+            return array;
         },
 
         /**
          * Removes all instances of `value` from `array`.
          *
          * @method pull
-         * @param {string} array
+         * @param {string} path
          * @param {*} [value]
          * @returns {Array}
          */
-        pull: function (array, value) {
+        pull: function (path, value) {
 
             // Asserting
-            XP.assertArgument(XP.isString(array, true), 1, 'string');
-            XP.assertOption(XP.isArray(this[array]), array, 'Array');
+            XP.assertArgument(XP.isString(path, true), 1, 'string');
+            XP.assertOption(XP.isArray(this.get(path)), path, 'Array');
 
             // Vars
-            var self = this;
+            var self  = this,
+                array = self.get(path);
 
             // Pulling
-            XP.forEachRight(self[array], function (val, i) { if (value === val) { self.splice(array, i, 1); } });
+            XP.forEachRight(array, function (val, i) { if (value === val) { self.splice(path, i, 1); } });
 
-            return self[array];
+            return array;
         },
 
         /**
          * Removes an element from `array` corresponding to the given index and returns it.
          *
          * @method pullAt
-         * @param {string} array
+         * @param {string} path
          * @param {number} index
          * @returns {*}
          */
-        pullAt: function (array, index) {
+        pullAt: function (path, index) {
 
             // Asserting
-            XP.assertArgument(XP.isString(array, true), 1, 'string');
+            XP.assertArgument(XP.isString(path, true), 1, 'string');
             XP.assertArgument(XP.isVoid(index) || XP.isIndex(index), 2, 'number');
-            XP.assertOption(XP.isArray(this[array]), array, 'Array');
+            XP.assertOption(XP.isArray(this.get(path)), path, 'Array');
+
+            // Vars
+            var self  = this,
+                array = self.get(path);
 
             // Pulling
-            return index < this[array].length ? this.splice(array, index, 1)[0] : undefined;
+            return index < array.length ? self.splice(path, index, 1)[0] : undefined;
         }
     };
 </script>
