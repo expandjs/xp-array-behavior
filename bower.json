@@ -3,7 +3,7 @@
   "license": "BSD-3-Clause",
   "version": "0.10.0",
   "main": "xp-array-behavior.html",
-  "description": "A behavior used to improve Polymer's array mutation API.",
+  "description": "A behavior used to improve Polymer's array mutation API",
   "homepage": "http://expandjs.com/elements/xp-array-behavior",
   "authors": [
     "Giuliano Rullo <g.rullo@expandjs.com>",
